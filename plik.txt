@@ -1,1 +1,30 @@
-Nitro 
+zad 3
+update postac3 set nazwa='Gertruda Niszczera' where pesel='12233445566';
+update postac3 set statek='Pisomaniak' where nazwa='Tesciowa';
+update postac3 set statek='Pisomaniak' where nazwa='Bozydar';
+update statek3 set data_wodowania='1910-07-14' where nazwa_statku='Pisomaniak';
+select nazwa from postac3 where nazwa like '%a%';
+update postac3 set statek='Pisomaniak' where nazwa like '%a%';
+update statek3 set max_ladownosc=max_ladownosc*0.7 where data_wodowania between '1901-01-01' and '2000-12-31';
+alter table postac3 add check(wiek<=1000);
+zad 4.
+alter table postac3 modify rodzaj enum('waz','Wiking','Kobieta','Ptak','Syrena');
+insert into postac3 values(10,'waz loko','1800-10-10', 220, null, null,'11223344552','waz');
+create table Marynarz select * from postac3;
+update Marynarz set rodzaj='Wiking' where nazwa='Bjorn';
+Delete from Marynarz where nazwa='waz loko';
+Zad 5.
+update postac3 set statek=null;
+update Marynarz set statek=null;
+delete from postac3 where nazwa='Zdzis';
+delete from Marynarz where nazwa='Zdzis';
+delete from statek3 where nazwa_statku='Konfaup';
+delete from statek3 where nazwa_statku='Pisomaniak';
+drop table statek3;
+alter table postac3 drop foreign key postac3_ibfk_1;
+drop table statek3;
+create table zwierz(id_zwierza int primary key auto_increment, nazwa varchar(40), wiek int unsigned);
+select nazwa, data_ur, wiek, pesel from postac3 where nazwa='Drozd';
+insert into zwierz select id_postaci, nazwa, wiek from postac3 where nazwa='Drozd';
+
+
