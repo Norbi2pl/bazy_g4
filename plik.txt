@@ -26,5 +26,43 @@ drop table statek3;
 create table zwierz(id_zwierza int primary key auto_increment, nazwa varchar(40), wiek int unsigned);
 select nazwa, data_ur, wiek, pesel from postac3 where nazwa='Drozd';
 insert into zwierz select id_postaci, nazwa, wiek from postac3 where nazwa='Drozd';
+5 LAB 
+zad 1.1
+create table kreatura select * from wikingowie.kreatura;
+create table zasob select * from wikingowie.zasob;
+create table ekwipunek select * from wikingowie.ekwipunek;
+ alter table ekwipunek add primary key(idEkwipunku);
+ alter table zasob add primary key(idZasobu);
+ alter table kreatura add primary key(idKreatury);
+alter table ekwipunek add foreign key (idKreatury) references kreatura(idKreatury);
+ alter table ekwipunek add foreign key (idZasobu) references zasob(idZasobu);
+zad 1.2
+select * from zasob;
+zad 1.3
+ select * from zasob where rodzaj='jedzenie';
+zad 4
+ select idZasobu, ilosc from ekwipunek where idKreatury in(1,3,5);
+zad 2.1
+ select * from kreatura where not rodzaj='wiedzma' and udzwig>=50;
+zad 2.2
+ select * from zasob where waga>2 and waga<5;
+zad 2.3
+ select * from kreatura where nazwa like "%or%" and udzwig between 30 and 70;
+zad 3.1
+ select * from zasob where month( dataPozyskania) in (07,08);
+zad 3.2
+select * from zasob where rodzaj!='' order by waga;
+zad 3.3
+ select * from kreatura order by dataUr asc limit 5;
+
+
+
+
+
+
+
+
+
+
 
 
