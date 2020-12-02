@@ -40,7 +40,7 @@ zad 1.2
 select * from zasob;
 zad 1.3
  select * from zasob where rodzaj='jedzenie';
-zad 4
+zad 1.4
  select idZasobu, ilosc from ekwipunek where idKreatury in(1,3,5);
 zad 2.1
  select * from kreatura where not rodzaj='wiedzma' and udzwig>=50;
@@ -54,14 +54,41 @@ zad 3.2
 select * from zasob where rodzaj!='' order by waga;
 zad 3.3
  select * from kreatura order by dataUr asc limit 5;
-
-
-
-
-
-
-
-
+zad 4.1
+  select distinct rodzaj from zasob; 
+  select distinct(rodzaj) from zasob;
+zad 4.2
+select concat(nazwa, " - ", rodzaj) from kreatura where rodzaj like 'wi%';
+zad 4.3
+select concat(nazwa, " - ",waga*ilosc) from zasob where YEAR(dataPozyskan
+ia) between 2000 and 2007;
+zad 5.1
+ select nazwa, waga*0.7 as masa_netto, waga*0.3 as odpadki from zasob where rodzaj='jedzenie';
+zad 5.2
+ select * from zasob where rodzaj is null;
+zad 5.3
+ select distinct rodzaj, nazwa from zasob where nazwa like 'ba%' or nazwa like '%os'order by rodzaj asc;
+Lab 6
+zad 1.1
+ select avg(waga) from kreatura where rodzaj='wiking';
+zad 1.2
+ select rodzaj, count(*), avg(waga) from kreatura group by rodzaj;
+zad 1.3
+ select nazwa, 2020-year(dataUr) from kreatura;
+ select rodzaj, avg( 2020-year(dataUr)) from kreatura group by rodzaj;
+zad 2.1
+ select rodzaj, sum(waga) from zasob group by rodzaj;
+zad 2.2
+ select avg(waga) as srednia_waga,nazwa from zasob where ilosc>= 4 group by nazwa having avg(waga)>10;
+zad 2.3
+ select count(nazwa) as rozne_nazwy, rodzaj from zasob group by rodzaj having min(ilosc)>1;
+ select count(nazwa) as rozne_nazwy, rodzaj from zasob group by rodzaj having sum(ilosc)>1;
+zad 3.1
+ select k.nazwa , e.ilosc from kreatura k , ekwipunek e where k.idkreatury=e.idkreatury;
+zad 3.2
+ select * from kreatura k, ekwipunek e, zasob z where k.idKreatury=e.idKreatury and e.idZasobu=z.idZasobu;
+zad 3.3
+ select k.nazwa, k.idKreatury, e.idKreatury from kreatura k left join ekwipunek e on k.idKreatury=e.idKreatury where e.idKreatury is null order by k.nazwa;
 
 
 
