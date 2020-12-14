@@ -1,0 +1,135 @@
+zad 3
+update postac3 set nazwa='Gertruda Niszczera' where pesel='12233445566';
+update postac3 set statek='Pisomaniak' where nazwa='Tesciowa';
+update postac3 set statek='Pisomaniak' where nazwa='Bozydar';
+update statek3 set data_wodowania='1910-07-14' where nazwa_statku='Pisomaniak';
+select nazwa from postac3 where nazwa like '%a%';
+update postac3 set statek='Pisomaniak' where nazwa like '%a%';
+update statek3 set max_ladownosc=max_ladownosc*0.7 where data_wodowania between '1901-01-01' and '2000-12-31';
+alter table postac3 add check(wiek<=1000);
+zad 4.
+alter table postac3 modify rodzaj enum('waz','Wiking','Kobieta','Ptak','Syrena');
+insert into postac3 values(10,'waz loko','1800-10-10', 220, null, null,'11223344552','waz');
+create table Marynarz select * from postac3;
+update Marynarz set rodzaj='Wiking' where nazwa='Bjorn';
+Delete from Marynarz where nazwa='waz loko';
+Zad 5.
+update postac3 set statek=null;
+update Marynarz set statek=null;
+delete from postac3 where nazwa='Zdzis';
+delete from Marynarz where nazwa='Zdzis';
+delete from statek3 where nazwa_statku='Konfaup';
+delete from statek3 where nazwa_statku='Pisomaniak';
+drop table statek3;
+alter table postac3 drop foreign key postac3_ibfk_1;
+drop table statek3;
+create table zwierz(id_zwierza int primary key auto_increment, nazwa varchar(40), wiek int unsigned);
+select nazwa, data_ur, wiek, pesel from postac3 where nazwa='Drozd';
+insert into zwierz select id_postaci, nazwa, wiek from postac3 where nazwa='Drozd';
+5 LAB 
+zad 1.1
+create table kreatura select * from wikingowie.kreatura;
+create table zasob select * from wikingowie.zasob;
+create table ekwipunek select * from wikingowie.ekwipunek;
+ alter table ekwipunek add primary key(idEkwipunku);
+ alter table zasob add primary key(idZasobu);
+ alter table kreatura add primary key(idKreatury);
+alter table ekwipunek add foreign key (idKreatury) references kreatura(idKreatury);
+ alter table ekwipunek add foreign key (idZasobu) references zasob(idZasobu);
+zad 1.2
+select * from zasob;
+zad 1.3
+ select * from zasob where rodzaj='jedzenie';
+zad 1.4
+ select idZasobu, ilosc from ekwipunek where idKreatury in(1,3,5);
+zad 2.1
+ select * from kreatura where not rodzaj='wiedzma' and udzwig>=50;
+zad 2.2
+ select * from zasob where waga>2 and waga<5;
+zad 2.3
+ select * from kreatura where nazwa like "%or%" and udzwig between 30 and 70;
+zad 3.1
+ select * from zasob where month( dataPozyskania) in (07,08);
+zad 3.2
+select * from zasob where rodzaj!='' order by waga;
+zad 3.3
+ select * from kreatura order by dataUr asc limit 5;
+zad 4.1
+  select distinct rodzaj from zasob; 
+  select distinct(rodzaj) from zasob;
+zad 4.2
+select concat(nazwa, " - ", rodzaj) from kreatura where rodzaj like 'wi%';
+zad 4.3
+select concat(nazwa, " - ",waga*ilosc) from zasob where YEAR(dataPozyskan
+ia) between 2000 and 2007;
+zad 5.1
+ select nazwa, waga*0.7 as masa_netto, waga*0.3 as odpadki from zasob where rodzaj='jedzenie';
+zad 5.2
+ select * from zasob where rodzaj is null;
+zad 5.3
+ select distinct rodzaj, nazwa from zasob where nazwa like 'ba%' or nazwa like '%os'order by rodzaj asc;
+Lab 6
+zad 1.1
+ select avg(waga) from kreatura where rodzaj='wiking';
+zad 1.2
+ select rodzaj, count(*), avg(waga) from kreatura group by rodzaj;
+zad 1.3
+ select nazwa, 2020-year(dataUr) from kreatura;
+ select rodzaj, avg( 2020-year(dataUr)) from kreatura group by rodzaj;
+zad 2.1
+ select rodzaj, sum(waga) from zasob group by rodzaj;
+zad 2.2
+ select avg(waga) as srednia_waga,nazwa from zasob where ilosc>= 4 group by nazwa having avg(waga)>10;
+zad 2.3
+ select count(nazwa) as rozne_nazwy, rodzaj from zasob group by rodzaj having min(ilosc)>1;
+ select count(nazwa) as rozne_nazwy, rodzaj from zasob group by rodzaj having sum(ilosc)>1;
+zad 3.1
+ select k.nazwa , e.ilosc from kreatura k , ekwipunek e where k.idkreatury=e.idkreatury;
+zad 3.2
+ select * from kreatura k, ekwipunek e, zasob z where k.idKreatury=e.idKreatury and e.idZasobu=z.idZasobu;
+zad 3.3
+ select k.nazwa, k.idKreatury, e.idKreatury from kreatura k left join ekwipunek e on k.idKreatury=e.idKreatury where e.idKreatury is null order by k.nazwa;
+Lab 7
+zad 1.2
+select k.rodzaj, sum(e.ilosc), sum(e.ilosc*z.waga), avg(e.ilosc*z.waga) from kreatura k.ekwipunek, e.zasob z where k.idKreatury=e.idreatury and e.idZasobu=z.idZasobu group by k.rodzaj;
+zad 1.3
+select * from uczestnicy order by 1;
+select * from uczestnicy u, wyprawa w, kreatura k where u.id_uczestnika=k.idKreatury and w.id_wyprawy=u.id_wyprawy;
+zad 2.1
+Select rodzaj, group_concat(nazwa," ", idKreatury SEPARATOR ' -> ') from kreatura group by rodzaj;
+zad 2.2
+SELECT e.idEtapu, k.nazwa, s.nazwa FROM etapy_wyprawy e INNER JOIN sektor s ON e.sektor=s.id_sektora INNER JOIN wyprawa w ON e.idWyprawy=w.id_wyprawy INNER JOIN kreatura k ON w.kierownik=k.idKreatury ORDER BY w.data_rozpoczecia, e.kolejnosc;
+
+zad 4.1
+SELECT w.nazwa, SUM(LENGTH(et.dziennik)) FROM wyprawa w JOIN etapy_wyprawy et ON w.id_wyprawy = et.idWyprawy GROUP BY w.nazwa HAVING SUM(LENGTH(et.dziennik)) < 400;
+zad 4.2
+SELECT w.nazwa, COUNT(DISTINCT(u.id_uczestnika)), SUM(e.ilosc*z.waga)/COUNT(DISTINCT(u.id_uczestnika)) AS "średnia waga" FROM wyprawa AS w LEFT JOIN uczestnicy AS u ON w.id_wyprawy = u.id_wyprawy LEFT JOIN kreatura AS k ON u.id_uczestnika = k.idKreatury LEFT JOIN ekwipunek AS e ON k.idKreatury= e.idKreatury LEFT JOIN zasob AS z ON e.idZasobu = z.idZasobu GROUP BY w.nazwa;
+zad 5.1
+select nazwa, datediff(now(), dataUr) from kreatura;
+Lab 8
+zad 1.1
+DELIMITER //
+CREATE TRIGGER kreatura_before_insert
+BEFORE INSERT ON kreatura
+FOR EACH ROW
+BEGIN
+IF NEW.waga < 0
+THEN
+SET NEW.waga = 0;
+END IF;
+END
+//
+DELIMITER ;
+zad 2.1
+CREATE TABLE  archiwum_wypraw(id_wyprawy int AUTO_INCREMENT PRIMARY KEY, nazwa varchar(255), data_rozpoczecia DATE, data_zakonczenia DATE, kierownik varchar(255));
+create table wyprawa select *from wikingowie.wyprawa;
+DELIMITER $$
+CREATE TRIGGER uczestnicy_after_delete_wyprawa1
+BEFORE DELETE ON wyprawa
+FOR EACH ROW
+BEGIN
+INSERT INTO archiwum_wypraw(nazwa, data_rozpoczecia, data_zakonczenia,kierownik VALUES (OLD.nazwa, OLD.data_rozpoczecia, OLD.data_zakonczenia, (SELECT nazwa as kierowniczek from kreatura where kreatura.idKreatury=OLD.kierownik));
+END
+$$
+DELIMITER ;
+
